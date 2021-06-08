@@ -54,3 +54,23 @@ function pqrc_display_qr_code( $content ) {
     return $content;
 }
 add_filter( 'the_content', 'pqrc_display_qr_code' );
+
+function pqrc_settings_init(){
+    add_settings_field("pqrc_height",__("Qr_Code_Height","posts-to-qrcode"), "pqrc_display_height", "general");
+    add_settings_field('pqrc_width', __('Qr_Code_width', 'post_to_qrcode'), 'pqrc_display_width', 'general');
+
+    register_setting('general', 'pqrc_height', array('sanitize_callback'=>'esc_attr'));
+    register_setting('general', 'pqrc_width', array('sanitize_callback'=>'esc_attr'));
+}
+
+function pqrc_display_height(){
+    $height = get_option('pqrc_height'); 
+    printf ("<input type='text' id='%s' name='%s' value='%s'/>",'pqrc_height', 'pqrc_height', $height);
+}
+function pqrc_display_width(){
+    $width = get_option('pqrc_width');
+    printf ("<input type='text' id='%s' name='%s' value='%s'/>",'pqrc_width', 'pqrc_width', $width);
+}
+
+
+add_action( 'admin_init','pqrc_settings_init');
