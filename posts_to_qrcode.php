@@ -42,7 +42,11 @@ function pqrc_display_qr_code( $content ) {
     /**
      * Dimension Hook
      */
-    $dimension = apply_filters('pqrc_qrcode_dimension', '150x150');
+    $height = get_option('pqrc_height');
+    $width = get_option('pqrc_width');
+    $height = $height ? $height : 180;
+    $width = $width ? $width : 180;
+    $dimension = apply_filters('pqrc_qrcode_dimension', "{$width}x{$height}");
 
     /**
      * Image Attributes
