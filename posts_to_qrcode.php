@@ -21,6 +21,18 @@ Domain Path: /languages
 // }
 // register_deactivation_hook(__FILE__,"qrcode_deactivation_hook");
 
+$pqrc_countries = [
+    __('None','posts-to-qrcode'),
+    __('Afghanistan','posts-to-qrcode'),
+    __('Bangladesh','posts-to-qrcode'),
+    __('Bhutan','posts-to-qrcode'),
+    __('India','posts-to-qrcode'),
+    __('Maldives','posts-to-qrcode'),
+    __('Nepal','posts-to-qrcode'),
+    __('Pakistan','posts-to-qrcode'),
+    __('Sri Lanka','posts-to-qrcode')
+];
+
 function posts_to_qrcode_load_textdomain() {
     load_plugin_textdomain( 'posts-to-qrcode', false, dirname( __FILE__ ) . "/languages" );
 }
@@ -67,7 +79,7 @@ function pqrc_settings_init() {
     // add_settings_field( 'pqrc_extra', __( 'Extra Field', 'posts-to-qrcode' ), 'pqrc_display_field', 'general','pqrc_section',['pqrc_extra'] );
     add_settings_field( 'pqrc_select', __( 'Dropdown', 'posts-to-qrcode' ), 'pqrc_display_select_field', 'general','pqrc_section');
     add_settings_field( 'pqrc_checkbox', __( 'Checkbox', 'posts-to-qrcode' ), 'pqrc_display_checkbox_field', 'general','pqrc_section');
-    add_settings_field( 'pqrc_radio', __( 'Radio', 'posts-to-qrcode' ), 'pqrc_display_radio_field', 'general','pqrc_section');
+    // add_settings_field( 'pqrc_radio', __( 'Radio', 'posts-to-qrcode' ), 'pqrc_display_radio_field', 'general','pqrc_section');
 
 
     register_setting( 'general', 'pqrc_height', [ 'sanitize_callback' => 'esc_attr' ] );
@@ -75,45 +87,25 @@ function pqrc_settings_init() {
     // register_setting( 'general', 'pqrc_extra', [ 'sanitize_callback' => 'esc_attr' ] );
     register_setting( 'general', 'pqrc_select', [ 'sanitize_callback' => 'esc_attr' ] );
     register_setting( 'general', 'pqrc_checkbox');
-    register_setting( 'general', 'pqrc_radio');
+    // register_setting( 'general', 'pqrc_radio');
 }
 
-function pqrc_display_radio_field(){
-    $option = get_option('pqrc_radio');
-    $countries = [
-        'None',
-        'Afghanistan',
-        'Bangladesh',
-        'Bhutan',
-        'India',
-        'Maldives',
-        'Nepal',
-        'Pakistan',
-        'Sri Lanka'
-    ];
-    foreach($countries as $country){
-        $selected = '';
-        if(is_array($option) && in_array($country,$option)){
-            $selected = 'checked';
-        };
-        printf("<input type='radio' name ='%s' value='%s' %s /> %s",$country,$country,$selected,$country);
-    }
-}
+// function pqrc_display_radio_field(){
+//     $option = get_option('pqrc_radio');
+//     foreach($pqrc_countries as $country){
+//         $selected = '';
+//         if(is_array($option) && in_array($country,$option)){
+//             $selected = 'checked';
+//         };
+//         printf("<input type='radio' name ='%s' value='%s' %s /> %s",$country,$country,$selected,$country);
+//     }
+// }
 
 function pqrc_display_checkbox_field(){
+    global $pqrc_countries;
     $option = get_option('pqrc_checkbox');
-    $countries = [
-        'None',
-        'Afghanistan',
-        'Bangladesh',
-        'Bhutan',
-        'India',
-        'Maldives',
-        'Nepal',
-        'Pakistan',
-        'Sri Lanka'
-    ];
-    foreach($countries as $country){
+    $pqrc_countries = apply_filters('pqrc_countries',$pqrc_countries);
+    foreach($pqrc_countries as $country){
         $selected = '';
         if(is_array($option) && in_array($country,$option)){
             $selected = 'checked';
@@ -123,20 +115,11 @@ function pqrc_display_checkbox_field(){
 }
 
 function pqrc_display_select_field(){
+    global $pqrc_countries;
     $option = get_option('pqrc_select');
-    $countries = [
-        'None',
-        'Afghanistan',
-        'Bangladesh',
-        'Bhutan',
-        'India',
-        'Maldives',
-        'Nepal',
-        'Pakistan',
-        'Sri Lanka'
-    ];
+    $pqrc_countries = apply_filters('pqrc_countries',$pqrc_countries);
     printf("<select id='%s' name='%s'>",'pqrc_select','pqrc_select');
-    foreach($countries as $country){
+    foreach($pqrc_countries as $country){
         $selected = '';
         if($option == $country) $selected ='selected';
         printf("<option value='%s' %s >%s</option>",$country,$selected,$country);
