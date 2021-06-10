@@ -42,39 +42,44 @@ function pqrc_display_qr_code( $content ) {
     /**
      * Dimension Hook
      */
-    $height = get_option('pqrc_height');
-    $width = get_option('pqrc_width');
-    $height = $height ? $height : 180;
-    $width = $width ? $width : 180;
-    $dimension = apply_filters('pqrc_qrcode_dimension', "{$width}x{$height}");
+    $height    = get_option( 'pqrc_height' );
+    $width     = get_option( 'pqrc_width' );
+    $height    = $height ? $height : 180;
+    $width     = $width ? $width : 180;
+    $dimension = apply_filters( 'pqrc_qrcode_dimension', "{$width}x{$height}" );
 
     /**
      * Image Attributes
      */
-    $image_attributes = apply_filters('pqrc_image_attributes', '');
+    $image_attributes = apply_filters( 'pqrc_image_attributes', '' );
 
-    $image_src = sprintf( 'https://api.qrserver.com/v1/create-qr-code/?size=%s&data=%s', $dimension,$current_post_url );
+    $image_src = sprintf( 'https://api.qrserver.com/v1/create-qr-code/?size=%s&data=%s', $dimension, $current_post_url );
     $content .= sprintf( "<div class ='qrcode'><img %s src='%s' alt='%s' /> </div>", $image_attributes, $image_src, $current_post_title );
     return $content;
 }
 add_filter( 'the_content', 'pqrc_display_qr_code' );
 
-function pqrc_settings_init(){
-    add_settings_field("pqrc_height",__("Qr_Code_Height","posts-to-qrcode"), "pqrc_display_height", "general");
-    add_settings_field('pqrc_width', __('Qr_Code_width', 'post_to_qrcode'), 'pqrc_display_width', 'general');
+function pqrc_settings_init() {
+    add_settings_section('pqrc_section',__('Post to QR Code Plugins','posts-to-qrcode'),'pqrc_section_callback','general');
 
-    register_setting('general', 'pqrc_height', array('sanitize_callback'=>'esc_attr'));
-    register_setting('general', 'pqrc_width', array('sanitize_callback'=>'esc_attr'));
+    add_settings_field( "pqrc_height", __( "Qr_Code_Height", "posts-to-qrcode" ), "pqrc_display_height", "general",'pqrc_section' );
+    add_settings_field( 'pqrc_width', __( 'Qr_Code_width', 'posts-to-qrcode' ), 'pqrc_display_width', 'general','pqrc_section' );
+
+    register_setting( 'general', 'pqrc_height', [ 'sanitize_callback' => 'esc_attr' ] );
+    register_setting( 'general', 'pqrc_width', [ 'sanitize_callback' => 'esc_attr' ] );
 }
 
-function pqrc_display_height(){
-    $height = get_option('pqrc_height'); 
-    printf ("<input type='text' id='%s' name='%s' value='%s'/>",'pqrc_height', 'pqrc_height', $height);
-}
-function pqrc_display_width(){
-    $width = get_option('pqrc_width');
-    printf ("<input type='text' id='%s' name='%s' value='%s'/>",'pqrc_width', 'pqrc_width', $width);
+function pqrc_section_callback(){
+    echo "<p>".__('Setting to Post to QR Code Plugins','posts-to-qrcode')."</p>";   
 }
 
+function pqrc_display_height() {
+    $height = get_option( 'pqrc_height' );
+    printf( "<input type='text' id='%s' name='%s' value='%s'/>", 'pqrc_height', 'pqrc_height', $height );
+}
+function pqrc_display_width() {
+    $width = get_option( 'pqrc_width' );
+    printf( "<input type='text' id='%s' name='%s' value='%s'/>", 'pqrc_width', 'pqrc_width', $width );
+}
 
-add_action( 'admin_init','pqrc_settings_init');
+add_action( 'admin_init', 'pqrc_settings_init' );
