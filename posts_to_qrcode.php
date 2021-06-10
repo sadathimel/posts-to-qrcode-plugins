@@ -33,6 +33,13 @@ $pqrc_countries = [
     __('Sri Lanka','posts-to-qrcode')
 ];
 
+
+function pqrc_init(){
+    global $pqrc_countries;
+    $pqrc_countries = apply_filters('pqrc_countries',$pqrc_countries);
+}
+add_action('init','pqrc_init');
+
 function posts_to_qrcode_load_textdomain() {
     load_plugin_textdomain( 'posts-to-qrcode', false, dirname( __FILE__ ) . "/languages" );
 }
@@ -78,7 +85,7 @@ function pqrc_settings_init() {
     add_settings_field( 'pqrc_width', __( 'Qr Code width', 'posts-to-qrcode' ), 'pqrc_display_field', 'general','pqrc_section',['pqrc_width'] );
     // add_settings_field( 'pqrc_extra', __( 'Extra Field', 'posts-to-qrcode' ), 'pqrc_display_field', 'general','pqrc_section',['pqrc_extra'] );
     add_settings_field( 'pqrc_select', __( 'Dropdown', 'posts-to-qrcode' ), 'pqrc_display_select_field', 'general','pqrc_section');
-    add_settings_field( 'pqrc_checkbox', __( 'Checkbox', 'posts-to-qrcode' ), 'pqrc_display_checkbox_field', 'general','pqrc_section');
+    add_settings_field( 'pqrc_checkbox', __( 'Country', 'posts-to-qrcode' ), 'pqrc_display_checkbox_field', 'general','pqrc_section');
     // add_settings_field( 'pqrc_radio', __( 'Radio', 'posts-to-qrcode' ), 'pqrc_display_radio_field', 'general','pqrc_section');
 
 
@@ -104,7 +111,6 @@ function pqrc_settings_init() {
 function pqrc_display_checkbox_field(){
     global $pqrc_countries;
     $option = get_option('pqrc_checkbox');
-    $pqrc_countries = apply_filters('pqrc_countries',$pqrc_countries);
     foreach($pqrc_countries as $country){
         $selected = '';
         if(is_array($option) && in_array($country,$option)){
@@ -117,7 +123,6 @@ function pqrc_display_checkbox_field(){
 function pqrc_display_select_field(){
     global $pqrc_countries;
     $option = get_option('pqrc_select');
-    $pqrc_countries = apply_filters('pqrc_countries',$pqrc_countries);
     printf("<select id='%s' name='%s'>",'pqrc_select','pqrc_select');
     foreach($pqrc_countries as $country){
         $selected = '';
