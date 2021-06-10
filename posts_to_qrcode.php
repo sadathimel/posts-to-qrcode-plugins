@@ -66,12 +66,60 @@ function pqrc_settings_init() {
     add_settings_field( 'pqrc_width', __( 'Qr Code width', 'posts-to-qrcode' ), 'pqrc_display_field', 'general','pqrc_section',['pqrc_width'] );
     // add_settings_field( 'pqrc_extra', __( 'Extra Field', 'posts-to-qrcode' ), 'pqrc_display_field', 'general','pqrc_section',['pqrc_extra'] );
     add_settings_field( 'pqrc_select', __( 'Dropdown', 'posts-to-qrcode' ), 'pqrc_display_select_field', 'general','pqrc_section');
+    add_settings_field( 'pqrc_checkbox', __( 'Checkbox', 'posts-to-qrcode' ), 'pqrc_display_checkbox_field', 'general','pqrc_section');
+    add_settings_field( 'pqrc_radio', __( 'Radio', 'posts-to-qrcode' ), 'pqrc_display_radio_field', 'general','pqrc_section');
 
 
     register_setting( 'general', 'pqrc_height', [ 'sanitize_callback' => 'esc_attr' ] );
     register_setting( 'general', 'pqrc_width', [ 'sanitize_callback' => 'esc_attr' ] );
     // register_setting( 'general', 'pqrc_extra', [ 'sanitize_callback' => 'esc_attr' ] );
     register_setting( 'general', 'pqrc_select', [ 'sanitize_callback' => 'esc_attr' ] );
+    register_setting( 'general', 'pqrc_checkbox');
+    register_setting( 'general', 'pqrc_radio');
+}
+
+function pqrc_display_radio_field(){
+    $option = get_option('pqrc_radio');
+    $countries = [
+        'None',
+        'Afghanistan',
+        'Bangladesh',
+        'Bhutan',
+        'India',
+        'Maldives',
+        'Nepal',
+        'Pakistan',
+        'Sri Lanka'
+    ];
+    foreach($countries as $country){
+        $selected = '';
+        if(is_array($option) && in_array($country,$option)){
+            $selected = 'checked';
+        };
+        printf("<input type='radio' name ='%s' value='%s' %s /> %s",$country,$country,$selected,$country);
+    }
+}
+
+function pqrc_display_checkbox_field(){
+    $option = get_option('pqrc_checkbox');
+    $countries = [
+        'None',
+        'Afghanistan',
+        'Bangladesh',
+        'Bhutan',
+        'India',
+        'Maldives',
+        'Nepal',
+        'Pakistan',
+        'Sri Lanka'
+    ];
+    foreach($countries as $country){
+        $selected = '';
+        if(is_array($option) && in_array($country,$option)){
+            $selected = 'checked';
+        };
+        printf("<input type='checkbox' name ='pqrc_checkbox[]' value='%s' %s /> %s",$country,$selected,$country);
+    }
 }
 
 function pqrc_display_select_field(){
