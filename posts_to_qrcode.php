@@ -62,13 +62,38 @@ add_filter( 'the_content', 'pqrc_display_qr_code' );
 function pqrc_settings_init() {
     add_settings_section('pqrc_section',__('Post to QR Code Plugins','posts-to-qrcode'),'pqrc_section_callback','general');
 
-    add_settings_field( "pqrc_height", __( "Qr_Code_Height", "posts-to-qrcode" ), "pqrc_display_field", "general",'pqrc_section',['pqrc_height'] );
-    add_settings_field( 'pqrc_width', __( 'Qr_Code_width', 'posts-to-qrcode' ), 'pqrc_display_field', 'general','pqrc_section',['pqrc_width'] );
-    add_settings_field( 'pqrc_extra', __( 'Qr_Code_extra', 'posts-to-qrcode' ), 'pqrc_display_field', 'general','pqrc_section',['pqrc_extra'] );
+    add_settings_field( "pqrc_height", __( "Qr Code Height", "posts-to-qrcode" ), "pqrc_display_field", "general",'pqrc_section',['pqrc_height'] );
+    add_settings_field( 'pqrc_width', __( 'Qr Code width', 'posts-to-qrcode' ), 'pqrc_display_field', 'general','pqrc_section',['pqrc_width'] );
+    // add_settings_field( 'pqrc_extra', __( 'Extra Field', 'posts-to-qrcode' ), 'pqrc_display_field', 'general','pqrc_section',['pqrc_extra'] );
+    add_settings_field( 'pqrc_select', __( 'Dropdown', 'posts-to-qrcode' ), 'pqrc_display_select_field', 'general','pqrc_section');
+
 
     register_setting( 'general', 'pqrc_height', [ 'sanitize_callback' => 'esc_attr' ] );
     register_setting( 'general', 'pqrc_width', [ 'sanitize_callback' => 'esc_attr' ] );
-    register_setting( 'general', 'pqrc_extra', [ 'sanitize_callback' => 'esc_attr' ] );
+    // register_setting( 'general', 'pqrc_extra', [ 'sanitize_callback' => 'esc_attr' ] );
+    register_setting( 'general', 'pqrc_select', [ 'sanitize_callback' => 'esc_attr' ] );
+}
+
+function pqrc_display_select_field(){
+    $option = get_option('pqrc_select');
+    $countries = [
+        'None',
+        'Afghanistan',
+        'Bangladesh',
+        'Bhutan',
+        'India',
+        'Maldives',
+        'Nepal',
+        'Pakistan',
+        'Sri Lanka'
+    ];
+    printf("<select id='%s' name='%s'>",'pqrc_select','pqrc_select');
+    foreach($countries as $country){
+        $selected = '';
+        if($option == $country) $selected ='selected';
+        printf("<option value='%s' %s >%s</option>",$country,$selected,$country);
+    }
+    echo "</select>";
 }
 
 function pqrc_section_callback(){
