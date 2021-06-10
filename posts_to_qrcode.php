@@ -62,15 +62,22 @@ add_filter( 'the_content', 'pqrc_display_qr_code' );
 function pqrc_settings_init() {
     add_settings_section('pqrc_section',__('Post to QR Code Plugins','posts-to-qrcode'),'pqrc_section_callback','general');
 
-    add_settings_field( "pqrc_height", __( "Qr_Code_Height", "posts-to-qrcode" ), "pqrc_display_height", "general",'pqrc_section' );
-    add_settings_field( 'pqrc_width', __( 'Qr_Code_width', 'posts-to-qrcode' ), 'pqrc_display_width', 'general','pqrc_section' );
+    add_settings_field( "pqrc_height", __( "Qr_Code_Height", "posts-to-qrcode" ), "pqrc_display_field", "general",'pqrc_section',['pqrc_height'] );
+    add_settings_field( 'pqrc_width', __( 'Qr_Code_width', 'posts-to-qrcode' ), 'pqrc_display_field', 'general','pqrc_section',['pqrc_width'] );
+    add_settings_field( 'pqrc_extra', __( 'Qr_Code_extra', 'posts-to-qrcode' ), 'pqrc_display_field', 'general','pqrc_section',['pqrc_extra'] );
 
     register_setting( 'general', 'pqrc_height', [ 'sanitize_callback' => 'esc_attr' ] );
     register_setting( 'general', 'pqrc_width', [ 'sanitize_callback' => 'esc_attr' ] );
+    register_setting( 'general', 'pqrc_extra', [ 'sanitize_callback' => 'esc_attr' ] );
 }
 
 function pqrc_section_callback(){
     echo "<p>".__('Setting to Post to QR Code Plugins','posts-to-qrcode')."</p>";   
+}
+
+function pqrc_display_field($args){
+    $option = get_option($args[0]);
+    printf( "<input type='text' id='%s' name='%s' value='%s'/>", $args[0], $args[0], $option );
 }
 
 function pqrc_display_height() {
