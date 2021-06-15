@@ -1,0 +1,80 @@
+.minitoggle {
+  position: relative;
+  width: 90px;
+  height: 54px;
+  background-color: #ebebeb;
+  border: 1px solid #e6e6e6;
+  border-radius: 56px;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.minitoggle .toggle-handle {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  z-index: 2;
+  width: 48px;
+  height: 48px;
+  background-color: #fff;
+  background-image: -webkit-linear-gradient(top, #fff 0, #f2f2f2 100%);
+  background-image: linear-gradient(to bottom, #fff 0, #f2f2f2 100%);
+  border-radius: 100px;
+  -webkit-transition: -webkit-transform 0.1s ease-in-out,
+    border 0.1s ease-in-out;
+  transition: transform 0.1s ease-in-out, border 0.1s ease-in-out;
+  box-shadow: 0px 2px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+.minitoggle.active {
+  background-color: #4cd964;
+  border: 1px solid #4cd964;
+  box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.25);
+}
+
+.minitoggle.active .toggle-handle {
+  transform: translate3d(28px, 0, 0);
+}
+
+/*blue*/
+
+.minitoggle.blue.active {
+  background-color: #69bdfe;
+  border-color: #69bdfe;
+}
+
+.minitoggle.blue.active .toggle-handle {
+  border-color: #3c78a5;
+}
+
+/*yellow*/
+
+.minitoggle.yellow.active {
+  background-color: #ffe186;
+  border-color: #ffe186;
+}
+
+.minitoggle.yellow.active .toggle-handle {
+  border-color: #f1c12f;
+}
+
+/*red*/
+
+.minitoggle.red.active {
+  background-color: #f79a7a;
+  border-color: #f79a7a;
+}
+
+.minitoggle.red.active .toggle-handle {
+  border-color: #ec6231;
+}
+
+/*orange*/
+
+.minitoggle.orange.active {
+  background-color: #ffb777;
+  border-color: #ffb777;
+}
+
+.minitoggle.orange.active .toggle-handle {
+  border-color: #f70;
+}

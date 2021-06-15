@@ -22,23 +22,22 @@ Domain Path: /languages
 // register_deactivation_hook(__FILE__,"qrcode_deactivation_hook");
 
 $pqrc_countries = [
-    __('None','posts-to-qrcode'),
-    __('Afghanistan','posts-to-qrcode'),
-    __('Bangladesh','posts-to-qrcode'),
-    __('Bhutan','posts-to-qrcode'),
-    __('India','posts-to-qrcode'),
-    __('Maldives','posts-to-qrcode'),
-    __('Nepal','posts-to-qrcode'),
-    __('Pakistan','posts-to-qrcode'),
-    __('Sri Lanka','posts-to-qrcode')
+    __( 'None', 'posts-to-qrcode' ),
+    __( 'Afghanistan', 'posts-to-qrcode' ),
+    __( 'Bangladesh', 'posts-to-qrcode' ),
+    __( 'Bhutan', 'posts-to-qrcode' ),
+    __( 'India', 'posts-to-qrcode' ),
+    __( 'Maldives', 'posts-to-qrcode' ),
+    __( 'Nepal', 'posts-to-qrcode' ),
+    __( 'Pakistan', 'posts-to-qrcode' ),
+    __( 'Sri Lanka', 'posts-to-qrcode' ),
 ];
 
-
-function pqrc_init(){
+function pqrc_init() {
     global $pqrc_countries;
-    $pqrc_countries = apply_filters('pqrc_countries',$pqrc_countries);
+    $pqrc_countries = apply_filters( 'pqrc_countries', $pqrc_countries );
 }
-add_action('init','pqrc_init');
+add_action( 'init', 'pqrc_init' );
 
 function posts_to_qrcode_load_textdomain() {
     load_plugin_textdomain( 'posts-to-qrcode', false, dirname( __FILE__ ) . "/languages" );
@@ -79,21 +78,21 @@ function pqrc_display_qr_code( $content ) {
 add_filter( 'the_content', 'pqrc_display_qr_code' );
 
 function pqrc_settings_init() {
-    add_settings_section('pqrc_section',__('Post to QR Code Plugins','posts-to-qrcode'),'pqrc_section_callback','general');
+    add_settings_section( 'pqrc_section', __( 'Post to QR Code Plugins', 'posts-to-qrcode' ), 'pqrc_section_callback', 'general' );
 
-    add_settings_field( "pqrc_height", __( "Qr Code Height", "posts-to-qrcode" ), "pqrc_display_field", "general",'pqrc_section',['pqrc_height'] );
-    add_settings_field( 'pqrc_width', __( 'Qr Code width', 'posts-to-qrcode' ), 'pqrc_display_field', 'general','pqrc_section',['pqrc_width'] );
+    add_settings_field( "pqrc_height", __( "Qr Code Height", "posts-to-qrcode" ), "pqrc_display_field", "general", 'pqrc_section', ['pqrc_height'] );
+    add_settings_field( 'pqrc_width', __( 'Qr Code width', 'posts-to-qrcode' ), 'pqrc_display_field', 'general', 'pqrc_section', ['pqrc_width'] );
     // add_settings_field( 'pqrc_extra', __( 'Extra Field', 'posts-to-qrcode' ), 'pqrc_display_field', 'general','pqrc_section',['pqrc_extra'] );
-    add_settings_field( 'pqrc_select', __( 'Dropdown', 'posts-to-qrcode' ), 'pqrc_display_select_field', 'general','pqrc_section');
-    add_settings_field( 'pqrc_checkbox', __( 'Country', 'posts-to-qrcode' ), 'pqrc_display_checkbox_field', 'general','pqrc_section');
+    add_settings_field( 'pqrc_select', __( 'Dropdown', 'posts-to-qrcode' ), 'pqrc_display_select_field', 'general', 'pqrc_section' );
+    add_settings_field( 'pqrc_checkbox', __( 'Country', 'posts-to-qrcode' ), 'pqrc_display_checkbox_field', 'general', 'pqrc_section' );
+    add_settings_field( 'pqrc_toggle', __( 'Toggle Field', 'posts-to-qrcode' ), 'pqrc_display_field', 'general', 'pqrc_section' );
     // add_settings_field( 'pqrc_radio', __( 'Radio', 'posts-to-qrcode' ), 'pqrc_display_radio_field', 'general','pqrc_section');
 
-
-    register_setting( 'general', 'pqrc_height', [ 'sanitize_callback' => 'esc_attr' ] );
-    register_setting( 'general', 'pqrc_width', [ 'sanitize_callback' => 'esc_attr' ] );
+    register_setting( 'general', 'pqrc_height', ['sanitize_callback' => 'esc_attr'] );
+    register_setting( 'general', 'pqrc_width', ['sanitize_callback' => 'esc_attr'] );
     // register_setting( 'general', 'pqrc_extra', [ 'sanitize_callback' => 'esc_attr' ] );
-    register_setting( 'general', 'pqrc_select', [ 'sanitize_callback' => 'esc_attr' ] );
-    register_setting( 'general', 'pqrc_checkbox');
+    register_setting( 'general', 'pqrc_select', ['sanitize_callback' => 'esc_attr'] );
+    register_setting( 'general', 'pqrc_checkbox' );
     // register_setting( 'general', 'pqrc_radio');
 }
 
@@ -108,36 +107,40 @@ function pqrc_settings_init() {
 //     }
 // }
 
-function pqrc_display_checkbox_field(){
+function pqrc_display_checkbox_field() {
     global $pqrc_countries;
-    $option = get_option('pqrc_checkbox');
-    foreach($pqrc_countries as $country){
+    $option = get_option( 'pqrc_checkbox' );
+    foreach ( $pqrc_countries as $country ) {
         $selected = '';
-        if(is_array($option) && in_array($country,$option)){
+        if ( is_array( $option ) && in_array( $country, $option ) ) {
             $selected = 'checked';
-        };
-        printf("<input type='checkbox' name ='pqrc_checkbox[]' value='%s' %s /> %s",$country,$selected,$country);
+        }
+        ;
+        printf( "<input type='checkbox' name ='pqrc_checkbox[]' value='%s' %s /> %s", $country, $selected, $country );
     }
 }
 
-function pqrc_display_select_field(){
+function pqrc_display_select_field() {
     global $pqrc_countries;
-    $option = get_option('pqrc_select');
-    printf("<select id='%s' name='%s'>",'pqrc_select','pqrc_select');
-    foreach($pqrc_countries as $country){
+    $option = get_option( 'pqrc_select' );
+    printf( "<select id='%s' name='%s'>", 'pqrc_select', 'pqrc_select' );
+    foreach ( $pqrc_countries as $country ) {
         $selected = '';
-        if($option == $country) $selected ='selected';
-        printf("<option value='%s' %s >%s</option>",$country,$selected,$country);
+        if ( $option == $country ) {
+            $selected = 'selected';
+        }
+
+        printf( "<option value='%s' %s >%s</option>", $country, $selected, $country );
     }
     echo "</select>";
 }
 
-function pqrc_section_callback(){
-    echo "<p>".__('Setting to Post to QR Code Plugins','posts-to-qrcode')."</p>";   
+function pqrc_section_callback() {
+    echo "<p>" . __( 'Setting to Post to QR Code Plugins', 'posts-to-qrcode' ) . "</p>";
 }
 
-function pqrc_display_field($args){
-    $option = get_option($args[0]);
+function pqrc_display_field( $args ) {
+    $option = get_option( $args[0] );
     printf( "<input type='text' id='%s' name='%s' value='%s'/>", $args[0], $args[0], $option );
 }
 
@@ -151,3 +154,13 @@ function pqrc_display_width() {
 }
 
 add_action( 'admin_init', 'pqrc_settings_init' );
+
+
+function pqrc_assets ($screen){
+    if('options-general.php' === $screen){
+        wp_enqueue_script('minitoggle-css',plugin_dir_url(__FILE__).'/assets/css/minitoggle.css');
+        wp_enqueue_script('minitoggle-js',plugin_dir_url(__FILE__).'/assets/js/minitoggle.js',array('jquery'),"1.0",true);
+        wp_enqueue_script('pqrc-main-js',plugin_dir_url(__FILE__).'/assets/js/pqrc-main.js',array('jquery'),time(),true);
+    }
+}
+add_action('admin_enqueue_scripts','pqrc_assets');
