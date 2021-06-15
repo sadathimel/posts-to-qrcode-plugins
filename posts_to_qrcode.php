@@ -60,10 +60,8 @@ function pqrc_display_qr_code( $content ) {
     /**
      * Dimension Hook
      */
-    $height    = get_option( 'pqrc_height' );
-    $width     = get_option( 'pqrc_width' );
-    $height    = $height ? $height : 180;
-    $width     = $width ? $width : 180;
+    $height    = get_option( 'pqrc_height' ) ? : 180;
+    $width     = get_option( 'pqrc_width' ) ? : 180;
     $dimension = apply_filters( 'pqrc_qrcode_dimension', "{$width}x{$height}" );
 
     /**
@@ -85,7 +83,7 @@ function pqrc_settings_init() {
     // add_settings_field( 'pqrc_extra', __( 'Extra Field', 'posts-to-qrcode' ), 'pqrc_display_field', 'general','pqrc_section',['pqrc_extra'] );
     add_settings_field( 'pqrc_select', __( 'Dropdown', 'posts-to-qrcode' ), 'pqrc_display_select_field', 'general', 'pqrc_section' );
     add_settings_field( 'pqrc_checkbox', __( 'Country', 'posts-to-qrcode' ), 'pqrc_display_checkbox_field', 'general', 'pqrc_section' );
-    add_settings_field( 'pqrc_toggle', __( 'Toggle Field', 'posts-to-qrcode' ), 'pqrc_display_field', 'general', 'pqrc_section' );
+    add_settings_field( 'pqrc_toggle', __( 'Toggle Field', 'posts-to-qrcode' ), 'pqrc_display_toggle_field', 'general', 'pqrc_section' );
     // add_settings_field( 'pqrc_radio', __( 'Radio', 'posts-to-qrcode' ), 'pqrc_display_radio_field', 'general','pqrc_section');
 
     register_setting( 'general', 'pqrc_height', ['sanitize_callback' => 'esc_attr'] );
@@ -93,6 +91,7 @@ function pqrc_settings_init() {
     // register_setting( 'general', 'pqrc_extra', [ 'sanitize_callback' => 'esc_attr' ] );
     register_setting( 'general', 'pqrc_select', ['sanitize_callback' => 'esc_attr'] );
     register_setting( 'general', 'pqrc_checkbox' );
+    register_setting( 'general', 'pqrc_toggle' );
     // register_setting( 'general', 'pqrc_radio');
 }
 
@@ -106,6 +105,11 @@ function pqrc_settings_init() {
 //         printf("<input type='radio' name ='%s' value='%s' %s /> %s",$country,$country,$selected,$country);
 //     }
 // }
+
+function pqrc_display_toggle_field(){
+   echo '<div class="toggle"></div>';
+}
+
 
 function pqrc_display_checkbox_field() {
     global $pqrc_countries;
@@ -156,11 +160,12 @@ function pqrc_display_width() {
 add_action( 'admin_init', 'pqrc_settings_init' );
 
 
-function pqrc_assets ($screen){
-    if('options-general.php' === $screen){
-        wp_enqueue_script('minitoggle-css',plugin_dir_url(__FILE__).'/assets/css/minitoggle.css');
-        wp_enqueue_script('minitoggle-js',plugin_dir_url(__FILE__).'/assets/js/minitoggle.js',array('jquery'),"1.0",true);
-        wp_enqueue_script('pqrc-main-js',plugin_dir_url(__FILE__).'/assets/js/pqrc-main.js',array('jquery'),time(),true);
+function pqrc_assets ( $screen ){
+
+    if( 'options-general.php' === $screen ){
+        wp_enqueue_style('pqrc-minitoggle',plugin_dir_url(__FILE__).'assets/css/minitoggle.css');
+        wp_enqueue_script('pqrc-minitoggle',plugin_dir_url(__FILE__).'assets/js/minitoggle.js',array('jquery'),"1.1",true);
+        wp_enqueue_script('pqrc-main',plugin_dir_url(__FILE__).'assets/js/pqrc-main.js',array('jquery'),time(),true);
     }
 }
 add_action('admin_enqueue_scripts','pqrc_assets');

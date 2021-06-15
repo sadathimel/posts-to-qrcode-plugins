@@ -1,1 +1,6 @@
-alert('hello');
+;
+  (function($){
+    $(document).ready(function() {
+         $('.toggle').minitoggle();
+      });
+  })(jQuery)
