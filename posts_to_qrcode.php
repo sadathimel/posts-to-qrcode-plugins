@@ -107,7 +107,9 @@ function pqrc_settings_init() {
 // }
 
 function pqrc_display_toggle_field(){
-   echo '<div class="toggle"></div>';
+    $option = get_option('pqrc_toggle');
+   echo '<div id="toggle"></div>';
+   echo "<input type='hidden' name='pqrc_toggle' id='pqrc_toggle' value='".$option."'/>";
 }
 
 
